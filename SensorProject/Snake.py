@@ -1,5 +1,4 @@
 
-from ast import And
 from sense_hat import SenseHat
 from time import sleep
 import os
@@ -39,16 +38,25 @@ while True:
     sleep(0.4)
     for event in sense.stick.get_events():
         if (event.action == 'pressed'):
-            if (event.direction == 'up'):
+            if (event.direction == 'up' and previousVelocity == 'down'):
+                None
+            elif (event.direction == 'up'):
                 previousVelocity = velocity
                 velocity = 'up'
+            elif (event.direction == 'down' and previousVelocity == 'up'):
+                None
             elif (event.direction == 'down'):
                 previousVelocity = velocity
                 velocity = 'down'
+            elif (event.direction == 'right' and previousVelocity == 'left'):
+                None
             elif (event.direction == 'right'):
                 previousVelocity = velocity
                 velocity = 'right'
+            elif (event.direction == 'left' and previousVelocity == 'right'):
+                None
             elif (event.direction == 'left'):
+                print('here')
                 previousVelocity = velocity
                 velocity = 'left'
     if (velocity == 'up' and previousVelocity == 'right'):
@@ -58,44 +66,111 @@ while True:
                     headPosition = index
                     break
             elif (index > 56):
-                if (snake[index] == R and snake[index - 63 + 8] != B):
+                if (snake[index] == R and snake[index - 63 + 7] != B):
                     headPosition = index
                     break
         for index in range(len(snake)):
-            # current problem is that the end of the snake will turn black, but then this affects the next link of the
-            # snake because of how for loops works
-            if (index <= 7):
-                if (snake[index] == R):
-                    print(index, 'COndition 0')
-                    snake[63 - (7 - index)] = R
-                    snake[index] = B
-                elif (snake[index] == B and index == headPosition and snake[index - 1] == b):
-                    print(index, "Condition 1")
-                    snake[63 - (7 - index)] = B
+            if (index < 56):
+                if (snake[index] == B and snake[index - 1] == b and snake[index - 8] == b and snake[index + 8] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
                     snake[index] = b
-                elif (snake[index + 8] == b and snake[index] == B and snake[index - 1] == b):
-                    print(index, "Condition 2")
+                    break
+                elif (snake[index] == B and snake[index - 1] == b and snake[index + 1] == b and snake[index + 8] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
                     snake[index] = b
-            elif (index > 7 and index < 56):
-                if (snake[index] == R):
-                    print(index, 'COndition 0')
-                    snake[index - 8] = R
-                    snake[index] = B
-                elif (snake[index] == B and index == headPosition and snake[index - 1] == b):
-                    print(index, "Condition 1")
-                    snake[index - 8] = B
-                    snake[index] = b
-                elif (snake[index + 8] == b and snake[index] == B and snake[index - 1] == b):
-                    print(index, "Condition 2")
-                    snake[index] = b
+                    break
             elif (index >= 56):
-                if (snake[index] == R):
-                    snake[index - 8] = R
-                    snake[index] = B
-                elif (snake[index - 63 + 8] == b and snake[index] == B):
+                if (snake[index] == B and snake[index - 1] == b and snake[index - 8] == b and snake[index - 63 + 7] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
                     snake[index] = b
-    elif (velocity == 'up' and previousVelocity == 'down'):
-        velocity = 'up'
+                    break
+                elif (snake[index] == B and snake[index - 1] == b and snake[index + 1] == b and snake[index - 63 + 7] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
+    elif (velocity == 'left' and previousVelocity == 'up'):
+        for index in range(len(snake)):
+            if (index < 56):
+                if (snake[index] == R and snake[index + 8] != B):
+                    headPosition = index
+                    break
+            elif (index > 56):
+                if (snake[index] == R and snake[index - 63 + 7] != B):
+                    headPosition = index
+                    break
+        for index in range(len(snake)):
+            if (index < 56):
+                if (snake[index] == B and snake[index + 1] == b and snake[index - 8] == b and snake[index + 8] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
+                elif (snake[index] == B and snake[index - 1] == b and snake[index + 1] == b and snake[index + 8] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
+            elif (index >= 56):
+                if (snake[index] == B and snake[index + 1] == b and snake[index - 8] == b and snake[index - 63 + 7] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
+                elif (snake[index] == B and snake[index - 1] == b and snake[index + 1] == b and snake[index - 63 + 7] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
+    elif (velocity == 'right' and previousVelocity == 'up'):
+        for index in range(len(snake)):
+            if (index < 56):
+                if (snake[index] == R and snake[index - 1] != B):
+                    headPosition = index
+                    break
+            elif (index > 56):
+                if (snake[index] == R and snake[index - 1] != B):
+                    headPosition = index
+                    break
+        for index in range(len(snake)):
+            if (index < 56):
+                # Before it takes the corner
+                if (snake[index] == B and snake[index - 1] == b and snake[index + 1] == b and snake[index + 8] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
+                elif (snake[index] == B and snake[index - 1] == b and snake[index - 8] == b and snake[index + 8] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
+            elif (index >= 56):
+                if (snake[index] == B and snake[index - 1] == b and snake[index - 8] == b and snake[index - 63 + 7] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
+                elif (snake[index] == B and snake[index - 1] == b and snake[index + 1] == b and snake[index - 63 + 7] == b):
+                    tempIndex = snake.index(R)
+                    snake[tempIndex - 8] = R
+                    snake[tempIndex] = B
+                    snake[index] = b
+                    break
     elif (velocity == 'right'):
         for index in range(len(snake)):
             if (snake[index] == R):
@@ -108,3 +183,4 @@ while True:
                 break
     print('update')
     sense.set_pixels(snake)
+
