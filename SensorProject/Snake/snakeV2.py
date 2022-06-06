@@ -175,7 +175,7 @@ while True:
         leftSecondList = [1, -8, 8]
         rightSecondList = [-1, 8, -8]
         bottomSecondList = [-1, 1, -8]
-        bottomLeftSecondList = [1, 8]
+        bottomLeftSecondList = [1, -8]
         bottomRightSecondList = [-1, -8]
         tempRedIndex = snake.index(R)
         tempBlueIndex = -1
